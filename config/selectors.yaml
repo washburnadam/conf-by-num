@@ -1,0 +1,39 @@
+# HTML selectors for churchofjesuschrist.org talk pages.
+# STATUS: UNVERIFIED. Written from general knowledge of the site, without access to it
+# (the site is blocked from the cloud sandbox where this kit was drafted).
+# Step 1.3 must confirm each list with `python -m cbtn.cli dom-outline <cached page>`
+# on 1971, 2000 and 2026 pages, then reorder/replace entries. First match wins; the
+# selector that matched is recorded in each talk's source.selectors for transparency.
+
+base_url: "https://www.churchofjesuschrist.org"
+conference_index: "/study/general-conference/{year}/{month:02d}?lang=eng"
+talk_url_regex: "/study/general-conference/(\\d{4})/(\\d{2})/([^/?#]+)"
+
+# Candidate structured endpoint used by the site's own front end (VERIFY in step 1.1).
+# If it works it returns JSON with the page HTML in content.body, which the same parser handles.
+json_api: "/study/api/v3/language-pages/type/content?lang=eng&uri=/general-conference/{year}/{month:02d}/{slug}"
+
+title: ["h1#title1", "header h1", "h1"]
+author_name: ["p.author-name", ".author-name", "[id^=author1]"]
+author_role: ["p.author-role", ".author-role", "[id^=author2]"]
+kicker: ["p.kicker", ".kicker", "p.intro", ".intro"]
+body: ["div.body-block", ".body-block", "article .body", "article", "body"]
+notes: ["footer.notes", "aside.notes", "section.notes", ".footnotes", "footer"]
+note_item: ["li[data-marker]", "li"]
+footnote_marker: ["sup.marker", "a.note-ref", "sup"]
+site_topics: ["meta[name=keywords]", ".topics a"]
+
+paragraph_kinds:
+  heading: ["h2", "h3", "h4", "h5", "h6"]
+  blockquote: ["blockquote p", "blockquote"]
+  list_item: ["li"]
+  caption: ["figcaption", ".image-caption", ".figure-caption"]
+skip_classes: ["title-number", "image-credit", "credit", "share", "related-content", "sidebar", "nav", "audio-player"]
+
+author_titles: ["President", "Elder", "Sister", "Bishop", "Brother"]
+
+item_type_rules:          # matched against the title (case-insensitive regex) -> item_type
+  sustaining: "^(the )?sustaining of|^sustaining of church officers|solemn assembly"
+  report: "audit(ing)? (department |committee )?report|statistical report|finance committee report|annual report of the church"
+  video: "video presentation|^video:|^session$|session video"
+  other: "^(saturday|sunday) (morning|afternoon|evening) session$|general (priesthood|women's|relief society|young women) (session|meeting)$"

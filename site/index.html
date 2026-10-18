@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Conference by the Numbers</title>
+<meta name="description" content="A word-by-word look at General Conference since 1971: which words and phrases the speakers emphasized.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@700&family=Source+Sans+3:wght@400;600&display=swap">
+<style>
+  /* Layout: the classic orange banner, then one card per conference (newest first), then method + licenses. */
+  :root { --bg: #FFFFFF; --ink: #1E1E1E; --muted: #5A5A5A; --line: #E4E0D8; --card: #FBF8F3; --link: #0E6F8C;
+          --banner: #C8501E; --band: #0E82A3; --head: Aharoni, "Jost", "Segoe UI", sans-serif;
+          --body: "Segoe UI", "Source Sans 3", system-ui, sans-serif; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) { --bg: #17191C; --ink: #ECECEC; --muted: #A4A4A4; --line: #33363C;
+      --card: #202327; --link: #8CC4EA; color-scheme: dark; }
+  }
+  :root[data-theme="dark"] { --bg: #17191C; --ink: #ECECEC; --muted: #A4A4A4; --line: #33363C; --card: #202327;
+    --link: #8CC4EA; color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.5; }
+  header { background: var(--banner); color: #fff; text-align: center; padding-block: 28px 22px; padding-inline: 16px; }
+  header h1 { font-family: var(--head); font-weight: 700; font-size: clamp(30px, 7vw, 54px); line-height: 1.05; margin: 0; }
+  .band { background: var(--band); color: #fff; text-align: center; padding: 10px 16px; font-size: 15px; }
+  main { max-width: 980px; margin: 0 auto; padding-inline: 16px; padding-block: 24px 40px; }
+  .lede { max-width: 65ch; color: var(--muted); margin: 0 0 20px; }
+  ul.cards { list-style: none; padding: 0; margin: 0; display: grid; gap: 20px;
+             grid-template-columns: repeat(auto-fill, minmax(min(100%, 420px), 1fr)); }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; min-width: 0; }
+  .card > a { display: block; color: inherit; text-decoration: none; }
+  .card img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; }
+  .card .name { display: block; font-family: var(--head); font-weight: 700; font-size: 22px; padding: 10px 14px 0; }
+  .card .links { display: block; padding: 2px 14px 14px; font-size: 15px; }
+  a { color: var(--link); }
+  a:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+  h2 { font-family: var(--head); font-weight: 700; font-size: 22px; margin: 36px 0 6px; }
+  section p, section li { max-width: 70ch; }
+  footer { border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; padding: 16px; text-align: center; }
+  footer p { max-width: 80ch; margin: 6px auto; }
+</style>
+</head>
+<body>
+<header><h1>CONFERENCE…<br>…BY THE NUMBERS</h1></header>
+<div class="band">General Conference of The Church of Jesus Christ of Latter-day Saints, word by word since 1971</div>
+<main>
+  <p class="lede">Which words and phrases did the speakers emphasize? Each conference is compared with every
+    conference before it. Open a conference and tap any word to see its use over time and the talks behind it.</p>
+  <ul class="cards">
+<li class="card"><a href="2026-10/"><img src="2026-10/header_2026-10.png" alt="October 2026 emphasized words" loading="lazy"><span class="name">October 2026</span></a><span class="links"><a href="2026-10/">Interactive</a> · <a href="2026-10/conference_by_the_numbers_2026-10.png">Poster (PNG)</a> · <a href="https://github.com/washburnadam/conf-by-num/tree/main/data/2026-10">Data</a></span></li>
+<li class="card"><a href="2026-04/"><img src="2026-04/header_2026-04.png" alt="April 2026 emphasized words" loading="lazy"><span class="name">April 2026</span></a><span class="links"><a href="2026-04/">Interactive</a> · <a href="2026-04/conference_by_the_numbers_2026-04.png">Poster (PNG)</a> · <a href="https://github.com/washburnadam/conf-by-num/tree/main/data/2026-04">Data</a></span></li>
+  </ul>
+  <section>
+    <h2>Method</h2>
+    <ul>
+      <li>Only spoken words are counted: no titles, summaries, footnotes, inline references, headings or web addresses.</li>
+      <li>A word's rate per 10,000 words is compared with its average rate in all earlier conferences since 1971.</li>
+      <li><b>Emphasized</b>: among the 300 most-used words, used at least twice as often as usual; names and everyday
+        words are left out. Tracked phrases qualify the same way with at least 10 uses.</li>
+      <li><b>Rising</b>: used more than usual and climbing steadily for decades. <b>Unique</b>: never spoken in
+        conference before (since 1971).</li>
+    </ul>
+    <p>Full method, code and data: <a href="https://github.com/washburnadam/conf-by-num">github.com/washburnadam/conf-by-num</a>.
+      Articles: <a href="https://adamlwashburn.medium.com/">Conference by the Numbers on Medium</a>.</p>
+    <h2>How to reproduce</h2>
+    <p>The repository has the code and the derived numbers, not the talk text. Its README lists the commands that
+      download the talks from the Church's website (politely, with a cache) and rebuild every count and chart.</p>
+  </section>
+</main>
+<footer>
+  <p>An independent personal project, not affiliated with or endorsed by The Church of Jesus Christ of Latter-day
+    Saints. General Conference talks are © Intellectual Reserve, Inc. and are not redistributed here; links go to
+    the official talk pages.</p>
+  <p>Code: MIT · Data and charts: CC BY 4.0, credit "Conference by the Numbers, Adam Washburn" · Leader tables:
+    CC BY-SA 4.0 (Wikipedia).</p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,15 @@
+# Analysis defaults (PLAN §6.2), confirmed with Adam at CP-4.1 (2026-10-11). See docs/analysis_method.md.
+top_n: 300                 # starting set = the conference's 300 most frequent words (consistent across conferences)
+min_count: 0               # optional extra fixed-count floor (0 = off); Adam adjusts per graphic in Step 5
+min_ratio: 2.0             # at least twice the baseline rate (workbook 'Ratio' >= 1.0)
+new_word_max_baseline: 1   # new word = never used in any earlier conference
+single_talk_share_flag: 0.6   # informational: one talk supplies >= 60% of the uses (Easter, mercy in Apr 2025)
+phrase_min_count: 5        # phrases: standalone count floor (phrases are rarer than words; no rank gate)
+lexicon_top: 100           # Wiktionary top-100 general words are not candidates (Adam's 'Top 100 General?')
+function_word_top: 250     # Wiktionary top-250 words flagged as possible function words (Apr 2025 check: catches
+                           # 'while' (148) but not 'Christ' (794) or 'joy' (677), which Adam kept)
+threshold_grid:
+  top_n: [200, 300, 400]
+  min_ratio: [1.5, 2.0, 3.0]
+per_conference: {}
+#  2026-04: {top_n: 250}

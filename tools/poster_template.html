@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>{{TITLE}}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@700&family=Source+Sans+3:ital,wght@0,400;0,700;1,700&display=swap">
+<style>
+  /* The poster is one fixed light design (it is the infographic itself); the page around it and the panel follow
+     the viewer's theme. */
+  :root { --page: #EDEAE4; --panel: #FFFFFF; --ink: #1E1E1E; --muted: #5A5A5A; --line: #DDD8CF; --link: #1F5F8B;
+          --word: #C8501E; --phrase: #0E82A3; --fill: #E6E1D8; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) { --page: #17191C; --panel: #23262B; --ink: #ECECEC; --muted: #A4A4A4;
+      --line: #3A3E45; --link: #8CC4EA; --word: #F08A6E; --phrase: #6CC3E0; --fill: #34383F; color-scheme: dark; }
+  }
+  :root[data-theme="dark"] { --page: #17191C; --panel: #23262B; --ink: #ECECEC; --muted: #A4A4A4; --line: #3A3E45;
+    --link: #8CC4EA; --word: #F08A6E; --phrase: #6CC3E0; --fill: #34383F; color-scheme: dark; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--page); color: var(--ink);
+               font-family: "Segoe UI", "Source Sans 3", system-ui, sans-serif; }
+  .wrap { display: flex; justify-content: center; gap: 24px; padding-block: 16px 40px; padding-inline: 12px; }
+  .poster { width: 100%; max-width: 480px; flex: 0 1 480px; min-width: 0; }
+  .poster svg { display: block; width: 100%; height: auto; border-radius: 12px;
+                box-shadow: 0 2px 14px rgba(0, 0, 0, .12); }
+  .head { font-family: Aharoni, "Jost", "Segoe UI", sans-serif; font-weight: 700; }
+  .body { font-family: "Segoe UI", "Source Sans 3", system-ui, sans-serif; }
+  .b { font-weight: 700; } .i { font-style: italic; }
+  .hot { fill: transparent; cursor: pointer; }
+  .hot:hover, .hot:focus-visible { fill: rgba(30, 30, 30, .06); stroke: #1E1E1E; stroke-width: .8; outline: none; }
+  .hot.sel { fill: rgba(30, 30, 30, .07); stroke: #1E1E1E; stroke-width: 1.4; }
+  .hint { max-width: 480px; margin: 0 auto 10px; font-size: 13px; color: var(--muted); text-align: center; }
+  /* details: bottom sheet on phones, side panel on wide screens */
+  .panel { position: fixed; left: 0; right: 0; bottom: 0; max-height: 62vh; overflow: auto; background: var(--panel);
+           border-top: 1px solid var(--line); border-radius: 14px 14px 0 0; padding: 14px 16px;
+           padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px)); box-shadow: 0 -6px 24px rgba(0, 0, 0, .18);
+           transform: translateY(105%); transition: transform .22s ease; z-index: 5; }
+  .panel.open { transform: none; }
+  @media (prefers-reduced-motion: reduce) { .panel { transition: none; } }
+  @media (min-width: 980px) {
+    .panel { position: sticky; top: 16px; align-self: flex-start; flex: 0 0 340px; max-height: calc(100vh - 32px);
+             transform: none; border: 1px solid var(--line); border-radius: 12px; box-shadow: none; }
+    .panel .close { display: none; }
+  }
+  .panel h2 { margin: 0 0 2px; font-family: Aharoni, "Jost", sans-serif; font-size: 24px; text-wrap: balance; }
+  .panel .meta { color: var(--muted); font-size: 14px; margin-bottom: 8px; }
+  .panel .cap { color: var(--muted); font-size: 12px; margin-top: 6px; }
+  .panel ol { margin: 6px 0 0; padding-left: 20px; font-size: 14px; }
+  .panel li { margin-bottom: 6px; }
+  .panel a { color: var(--link); }
+  .panel .empty { color: var(--muted); font-size: 14px; }
+  .close { position: absolute; top: 8px; right: 10px; border: 0; background: none; color: var(--muted);
+           font-size: 22px; cursor: pointer; line-height: 1; padding: 6px; }
+  .close:focus-visible { outline: 2px solid var(--link); border-radius: 6px; }
+  .spark { width: 100%; height: auto; display: block; }
+</style>
+</head>
+<body>
+<p class="hint">Tap any bubble, card or word tag for details and links to the talks.</p>
+<div class="wrap">
+  <div class="poster"><!--SVG--></div>
+  <aside class="panel" id="panel" aria-live="polite">
+    <button class="close" id="close" type="button" aria-label="Close details">×</button>
+    <div id="detail"><p class="empty">Tap a bubble, card or word tag in the infographic to see its talks.</p></div>
+  </aside>
+</div>
+<script>
+const D = /*DATA*/null;
+const panel = document.getElementById("panel"), detail = document.getElementById("detail");
+let selEl = null;
+function esc(s) { return String(s).replace(/[&<>"]/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c])); }
+
+function spark(rates, color) {
+  const W = 300, H = 92, L = 26, R = 6, T = 8, B = 18, n = rates.length, mx = Math.max(...rates) * 1.1 || 1;
+  const X = i => L + i / (n - 1) * (W - L - R), Y = v => H - B - v / mx * (H - T - B);
+  const pts = rates.map((v, i) => `${X(i).toFixed(1)},${Y(v).toFixed(1)}`).join(" ");
+  let s = `<svg class="spark" viewBox="0 0 ${W} ${H}" role="img" aria-label="uses per 10,000 words, 1971 to ${D.label}">`;
+  s += `<line x1="${L}" x2="${W - R}" y1="${Y(0)}" y2="${Y(0)}" stroke="var(--line)"/>`;
+  s += `<text x="${L - 4}" y="${Y(mx / 1.1) + 4}" text-anchor="end" font-size="10" fill="var(--muted)">${(mx / 1.1).toFixed(1)}</text>`;
+  for (const yr of [1980, 2000, 2020]) {
+    const i = D.confs.findIndex(c => c.startsWith(String(yr)));
+    if (i >= 0) s += `<text x="${X(i)}" y="${H - 4}" text-anchor="middle" font-size="10" fill="var(--muted)">${yr}</text>`;
+  }
+  s += `<polygon points="${X(0)},${Y(0)} ${pts} ${X(n - 1)},${Y(0)}" fill="var(--fill)"/>`;
+  s += `<polyline points="${pts}" fill="none" stroke="${color}" stroke-width="1.5" stroke-linejoin="round"/>`;
+  s += `<circle cx="${X(n - 1)}" cy="${Y(rates[n - 1])}" r="4" fill="${color}"/>`;
+  return s + "</svg>";
+}
+
+function talks(list) {
+  if (!list.length) return "";
+  return "<ol>" + list.map(t => `<li><a href="${esc(t.u)}" target="_blank" rel="noopener">${esc(t.sp)}, “${esc(t.ti)}”</a>` +
+    ` — ${t.c}×</li>`).join("") + "</ol>";
+}
+
+function show(id, el) {
+  const d = D.info[id];
+  if (!d) return;
+  if (selEl) selEl.classList.remove("sel");
+  selEl = el; el.classList.add("sel");
+  const color = d.phrase ? "var(--phrase)" : "var(--word)";
+  let h = `<h2>${esc(d.label)}</h2>`;
+  if (d.kind === "emphasized") {
+    h += `<div class="meta">${d.phrase ? "phrase" : "word"} · ${d.n} uses · ${d.x}× the usual rate · ${esc(d.topic)}</div>`;
+    h += spark(d.rates, color) + `<div class="cap">Uses per 10,000 words at every general conference since 1971 (dot = ${esc(D.label)})</div>`;
+    h += `<div style="margin-top:10px">Talks that used it most:</div>` + talks(d.talks);
+  } else if (d.kind === "rising") {
+    h += `<div class="meta">${d.phrase ? "phrase" : "word"} · ${d.n} uses · ${d.x}× the usual rate · rising steadily for decades</div>`;
+    h += spark(d.rates, color) + `<div class="cap">Uses per 10,000 words at every general conference since 1971</div>`;
+    h += `<div style="margin-top:10px">Talks that used it most in ${esc(D.label)}:</div>` + talks(d.talks);
+  } else {
+    h += `<div class="meta">First time in general conference since 1971 · ${d.n} use${d.n === 1 ? "" : "s"} in ${esc(D.label)}</div>`;
+    h += `<div>Said in:</div>` + talks(d.talks);
+  }
+  detail.innerHTML = h;
+  panel.classList.add("open");
+}
+
+for (const el of document.querySelectorAll(".hot")) {
+  el.addEventListener("click", () => show(el.dataset.id, el));
+  el.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); show(el.dataset.id, el); } });
+}
+document.getElementById("close").onclick = () => { panel.classList.remove("open"); if (selEl) selEl.classList.remove("sel"); };
+</script>
+</body>
+</html>

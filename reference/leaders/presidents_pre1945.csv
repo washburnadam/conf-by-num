@@ -1,0 +1,8 @@
+person_id,name,role,organization,title,start,end,source,verify
+joseph-smith,Joseph Smith,President,First Presidency,President,1830-04-06,1844-06-27,"Presidents of the Church, well-established dates (added CP-2.4 to fill gap before 1945)",true
+brigham-young,Brigham Young,President,First Presidency,President,1847-12-27,1877-08-29,"Presidents of the Church, well-established dates (added CP-2.4)",true
+john-taylor,John Taylor,President,First Presidency,President,1880-10-10,1887-07-25,"Presidents of the Church, well-established dates (added CP-2.4)",true
+wilford-woodruff,Wilford Woodruff,President,First Presidency,President,1889-04-07,1898-09-02,"Presidents of the Church, well-established dates (added CP-2.4)",true
+lorenzo-snow,Lorenzo Snow,President,First Presidency,President,1898-09-13,1901-10-10,"Presidents of the Church, well-established dates (added CP-2.4)",true
+joseph-f-smith,Joseph F. Smith,President,First Presidency,President,1901-10-17,1918-11-19,"Presidents of the Church, well-established dates (added CP-2.4)",true
+heber-j-grant,Heber J. Grant,President,First Presidency,President,1918-11-23,1945-05-14,"Presidents of the Church, well-established dates (added CP-2.4)",true

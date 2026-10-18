@@ -1,0 +1,1 @@
+# Global noise words (one per line). Added from Adam's curation decisions.
